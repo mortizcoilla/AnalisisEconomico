@@ -1,0 +1,40 @@
+|-- app.py
+|-- assets
+    |-- icons
+        |-- aws.png
+        |-- coursera.png
+        |-- email.png
+        |-- gcp.png
+        |-- github.png
+        |-- linkedin.png
+        |-- microsoft.png
+        |-- whatsapp.png
+    |-- styles
+        |-- base
+            |-- typography.css
+            |-- variables.css
+        |-- components
+            |-- footer.css
+            |-- header.css
+            |-- navigation.css
+        |-- layout
+            |-- layout.css
+            |-- responsive.css
+            |-- sections.css
+        |-- main-styles.css
+        |-- utils
+            |-- graphs.css
+            |-- tables.css
+|-- pages
+    |-- comercio.py
+    |-- macroeconomia.py
+    |-- politicas.py
+    |-- resumen.py
+    |-- sectorial.py
+    |-- sociedad.py
+|-- requirements.txt
+|-- tools
+    |-- estructura.py
+|-- utils
+    |-- __init__.py
+    |-- utils.py

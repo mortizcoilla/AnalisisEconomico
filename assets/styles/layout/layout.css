@@ -1,0 +1,18 @@
+.main-container {
+  padding-top: 150px; /* Ajusta este valor según la altura de tu encabezado */
+  padding-bottom: 70px; /* Ajusta este valor según la altura de tu footer */
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.page-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 5%;
+  flex-grow: 1;
+}
+
+.sub_page {
+  margin-bottom: 2rem;
+}
