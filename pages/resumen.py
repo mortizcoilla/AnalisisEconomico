@@ -130,14 +130,5 @@ def create_layout(app):
         ], className="footer")
     ], className="main-container")
 
-# No es necesario un callback específico para esta página,
-# ya que no hay interacciones dinámicas en el resumen.
-
-# Si necesitas agregar interactividad en el futuro, puedes hacerlo así:
-# @callback(
-#     Output({'type': 'graph', 'index': ALL}, 'figure'),
-#     Input('some-input', 'value')
-# )
-# def update_graphs(value):
-#     # Lógica para actualizar los gráficos
-#     pass
+def init_callbacks(app):
+    pass

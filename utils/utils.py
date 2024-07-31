@@ -8,6 +8,7 @@ def Encabezado(app):
                 html.H1("Análisis Económico de Chile", className="main-title"),
                 html.H2(id="subtitle", className="subtitle"),
             ], className="header-title-container"),
+            html.Button("☰", className="menu-toggle", id="menu-toggle"),
         ], className="header-content"),
         html.Nav([
             dcc.Link("Resumen", href="/informe-economico-chile/resumen", className="nav-link"),
@@ -16,7 +17,7 @@ def Encabezado(app):
             dcc.Link("Comercio", href="/informe-economico-chile/comercio", className="nav-link"),
             dcc.Link("Sociedad", href="/informe-economico-chile/sociedad", className="nav-link"),
             dcc.Link("Políticas Públicas", href="/informe-economico-chile/politicas", className="nav-link"),
-        ], className="nav-menu")
+        ], className="nav-menu", id="nav-menu")
     ], className="header")
 
 def obtener_menu():

@@ -184,3 +184,6 @@ def update_sector_content(selected_sector):
         return fig, analysis
     except Exception as e:
         return go.Figure(), f"Error: {str(e)}"
+    
+def init_callbacks(app):
+    pass

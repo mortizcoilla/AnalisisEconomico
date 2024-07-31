@@ -307,3 +307,6 @@ def update_social_content(selected_indicator):
     
     except Exception as e:
         return go.Figure(), f"Error al procesar el indicador: {str(e)}"
+    
+def init_callbacks(app):
+    pass

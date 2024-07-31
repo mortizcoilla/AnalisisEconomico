@@ -185,3 +185,6 @@ def update_politicas_content(selected_indicator):
         return fig, analysis
     except Exception as e:
         return go.Figure(), f"Error: {str(e)}"
+    
+def init_callbacks(app):
+    pass
