@@ -111,7 +111,7 @@ def create_layout(app):
             ]),
 
             html.Div([
-                html.H3("Conclusión: Hacia una Economía más Diversificada y Resiliente", className="section-title"),
+                html.H3("Hacia una Economía más Diversificada y Resiliente", className="section-title"),
                 dcc.Markdown("""
                 El análisis sectorial de la economía chilena revela tanto fortalezas como vulnerabilidades:
 

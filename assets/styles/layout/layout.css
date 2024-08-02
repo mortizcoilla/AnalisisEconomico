@@ -89,8 +89,9 @@
 }
 
 /* 5. Diseño de dos columnas */
+
 .dropdown-container {
-  width: 60%;  /* Ajusta este valor según necesites */
+  width: 50%;  /* Ajusta este valor según necesites */
   margin-bottom: 1rem;
 }
 .two-column-layout {
@@ -100,12 +101,12 @@
 }
 
 .column-left {
-  width: 60%;
+  width: 50%;
   padding-right: 1rem;
 }
 
 .column-right {
-  width: 40%;
+  width: 50%;
   padding-left: 1rem;
 }
 
