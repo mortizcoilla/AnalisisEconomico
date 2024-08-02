@@ -25,6 +25,8 @@ trade_balance = [11.9, 6.7, -2.0, -2.4, 2.8, -0.4, 1.3, 4.1, 1.0, 0.3, 15.1, 10.
 
 copper_exports = [40.3, 44.4, 41.9, 40.0, 36.7, 30.3, 28.1, 32.9, 36.0, 33.1, 37.5, 53.4, 51.0, 43.2]
 fruit_exports = [4.2, 4.7, 4.9, 5.3, 5.5, 5.2, 5.7, 5.9, 6.1, 6.3, 6.5, 6.8, 7.1, 7.4]
+fuel_imports = [10.5, 12.3, 13.1, 12.8, 11.5, 8.9, 8.5, 10.2, 12.5, 11.8, 9.2, 11.5, 13.2, 12.8]
+machinery_imports = [15.2, 18.5, 19.8, 19.5, 17.8, 15.6, 14.8, 16.2, 18.5, 17.4, 14.5, 18.2, 20.5, 19.8]
 
 df_trade = pd.DataFrame({
     'Año': years,
@@ -37,6 +39,12 @@ df_exports = pd.DataFrame({
     'Año': years,
     'Cobre': copper_exports,
     'Frutas': fruit_exports
+})
+
+df_imports = pd.DataFrame({
+    'Año': years,
+    'Combustibles': fuel_imports,
+    'Maquinaria': machinery_imports
 })
 
 # 4. Diccionario con los análisis para cada aspecto del comercio
@@ -106,17 +114,32 @@ def create_layout(app):
             ]),
 
             html.Div([
-                html.H3("Composición de las Exportaciones", className="section-title"),
-                dcc.Graph(
-                    id={'type': 'exports-composition-graph', 'page': 'comercio'},
-                    figure=px.area(df_exports, x='Año', y=['Cobre', 'Frutas'],
-                                   title='Composición de las Exportaciones Chilenas (Miles de millones USD)',
-                                   color_discrete_map={
-                                       'Cobre': colors['primary'],
-                                       'Frutas': colors['secondary']
-                                   })
-                )
-            ], className="full-width-graph"),
+                html.H3("Composición del Comercio Internacional", className="section-title"),
+                html.Div([
+                    html.Div([
+                        dcc.Graph(
+                            id={'type': 'exports-composition-graph', 'page': 'comercio'},
+                            figure=px.area(df_exports, x='Año', y=['Cobre', 'Frutas'],
+                                           title='Composición de las Exportaciones Chilenas (Miles de millones USD)',
+                                           color_discrete_map={
+                                               'Cobre': colors['primary'],
+                                               'Frutas': colors['secondary']
+                                           })
+                        )
+                    ], className="column-left"),
+                    html.Div([
+                        dcc.Graph(
+                            id={'type': 'imports-composition-graph', 'page': 'comercio'},
+                            figure=px.area(df_imports, x='Año', y=['Combustibles', 'Maquinaria'],
+                                           title='Composición de las Importaciones Chilenas (Miles de millones USD)',
+                                           color_discrete_map={
+                                               'Combustibles': colors['primary'],
+                                               'Maquinaria': colors['secondary']
+                                           })
+                        )
+                    ], className="column-right")
+                ], className="two-column-layout"),
+            ]),
 
             html.Div([
                 html.H3("Nuevo Paradigma Comercial", className="section-title"),
@@ -143,6 +166,7 @@ def create_layout(app):
             ], className="conclusion-section")
         ], className="page-content"),
     ], className="main-container")
+
 
 # 6. Funciones auxiliares
 def create_comercio_figure(indicator):

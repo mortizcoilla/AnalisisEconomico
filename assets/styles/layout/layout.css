@@ -109,6 +109,11 @@
   padding-left: 1rem;
 }
 
+.column-left, .column-right {
+  width: 50%;
+  padding: 0 10px;
+}
+
 /* 6. Estilos responsivos */
 @media (max-width: 768px) {
   .sidebar {

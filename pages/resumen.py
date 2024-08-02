@@ -84,19 +84,18 @@ def create_layout(app):
     return html.Div([
         html.Div([
             crear_resumen_ejecutivo("""
-            El presente informe analiza en profundidad la macroeconomía, los sectores productivos, el comercio internacional, 
-            los indicadores sociales y las políticas públicas de Chile. El análisis revela una situación crítica en la economía 
-            y sociedad chilena, sugiriendo la necesidad urgente de reformas estructurales tales como:
-            """, [
-                html.Ul([
-                    html.Li("Implementar políticas que fomenten la libertad económica y estimulen el crecimiento del PIB."),
-                    html.Li("Mejorar la calidad y accesibilidad de los sistemas de salud y educación."),
-                    html.Li("Reforzar las políticas de seguridad pública para reducir la tasa de criminalidad."),
-                    html.Li("Desarrollar estrategias para aumentar el poder adquisitivo de los ciudadanos."),
-                ])
-            ]),
+            El presente informe ofrece un análisis exhaustivo de la situación económica y social de Chile, abarcando aspectos cruciales como la macroeconomía,
+            los sectores productivos, el comercio internacional, los indicadores sociales y las políticas públicas. El estudio revela un panorama crítico
+            que demanda una acción urgente y reformas estructurales profundas. Se hace evidente la necesidad de implementar políticas que impulsen la libertad
+            económica y estimulen el crecimiento del PIB, al tiempo que se mejore sustancialmente la calidad y accesibilidad de los sistemas de salud y educación.
+            Asimismo, es imperativo reforzar las estrategias de seguridad pública para contrarrestar el aumento de la criminalidad y desarrollar medidas efectivas
+            que incrementen el poder adquisitivo de los ciudadanos. Este análisis busca proporcionar una base sólida para la toma de decisiones informadas que
+            conduzcan a un Chile más próspero, equitativo y seguro para todos sus habitantes.
+            """
+            ),
             
             crear_seccion_contenido("Indicadores Clave", [
+                html.P("Seleccione un indicador del menú desplegable para visualizar su evolución y leer un análisis detallado.", className="instructions-text"),
                 html.Div([
                     html.Div([
                         dcc.Dropdown(
