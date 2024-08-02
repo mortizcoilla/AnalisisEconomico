@@ -98,22 +98,23 @@ def create_layout(app):
                 html.P("Seleccione un indicador del menú desplegable para visualizar su evolución y leer un análisis detallado.", className="instructions-text"),
                 html.Div([
                     html.Div([
-                        dcc.Dropdown(
-                            id='indicator-dropdown',
-                            options=[{'label': i, 'value': i} for i in df_summary.columns if i != 'Año'],
-                            value='Índice de Libertad Económica',
-                            clearable=False
+                        html.Div([
+                            dcc.Dropdown(
+                                id='indicator-dropdown',
+                                options=[{'label': i, 'value': i} for i in df_summary.columns if i != 'Año'],
+                                value='Índice de Libertad Económica',
+                                clearable=False
+                            ),
+                        ], style={'width': '100%', 'marginBottom': '20px'}),
+                        dcc.Graph(
+                            id='summary-graph',
+                            style={'height': '400px', 'width': '100%'}
                         ),
-                    ], className="dropdown-container"),
+                    ], className="column-left", style={'width': '50%'}),
                     html.Div([
-                        html.Div([
-                            dcc.Graph(id='summary-graph')
-                        ], className="column-left"),
-                        html.Div([
-                            html.Div(id='interpretation', className="analysis-text")
-                        ], className="column-right"),
-                    ], className="two-column-layout"),
-                ])
+                        html.Div(id='interpretation', className="analysis-text")
+                    ], className="column-right", style={'width': '50%'}),
+                ], className="two-column-layout", style={'display': 'flex', 'justifyContent': 'space-between'}),
             ]),
         ], className="page-content"),
     ], className="main-container")

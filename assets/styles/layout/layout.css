@@ -89,30 +89,22 @@
 }
 
 /* 5. Diseño de dos columnas */
-
-.dropdown-container {
-  width: 50%;  /* Ajusta este valor según necesites */
-  margin-bottom: 1rem;
-}
 .two-column-layout {
   display: flex;
   flex-wrap: wrap;
+  justify-content: space-between;
   margin-top: 2rem;
 }
 
-.column-left {
-  width: 50%;
-  padding-right: 1rem;
-}
-
+.column-left,
 .column-right {
-  width: 50%;
-  padding-left: 1rem;
+  width: 48%; /* Cambiado a 48% para dar un pequeño espacio entre columnas */
+  padding: 0 1%;
 }
 
-.column-left, .column-right {
-  width: 50%;
-  padding: 0 10px;
+.dropdown-container {
+  width: 100%;
+  margin-bottom: 1rem;
 }
 
 /* 6. Estilos responsivos */

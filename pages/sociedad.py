@@ -123,6 +123,7 @@ def create_correlation_heatmap(df):
                      labels=dict(color="Correlación"),
                      x=correlation_matrix.columns,
                      y=correlation_matrix.columns,
+                     color_continuous_scale=["#E5E5E5", "#1C3D5A"],  # Escala de grises a azul oscuro
                      title="Matriz de Correlación entre Indicadores Sociales")
 
 # 5. Definición del layout
@@ -141,32 +142,37 @@ def create_layout(app):
                 html.P("Seleccione un indicador del menú desplegable para visualizar su evolución y leer un análisis detallado.", className="instructions-text"),
                 html.Div([
                     html.Div([
-                        dcc.Dropdown(
-                            id={'type': 'social-indicator-dropdown', 'page': 'sociedad'},
-                            options=[
-                                {'label': i, 'value': i} for i in df_social.columns if i != 'Año'
-                            ],
-                            value='Índice de Gini',
-                            clearable=False
+                        html.Div([
+                            dcc.Dropdown(
+                                id={'type': 'social-indicator-dropdown', 'page': 'sociedad'},
+                                options=[
+                                    {'label': i, 'value': i} for i in df_social.columns if i != 'Año'
+                                ],
+                                value='Índice de Gini',
+                                clearable=False
+                            ),
+                        ], style={'width': '100%', 'marginBottom': '20px'}),
+                        dcc.Graph(
+                            id={'type': 'social-indicator-graph', 'page': 'sociedad'},
+                            style={'height': '400px', 'width': '100%'}
                         ),
-                    ], className="dropdown-container"),
+                    ], className="column-left", style={'width': '50%'}),
                     html.Div([
-                        html.Div([
-                            dcc.Graph(id={'type': 'social-indicator-graph', 'page': 'sociedad'})
-                        ], className="column-left"),
-                        html.Div([
-                            html.Div(id={'type': 'social-indicator-analysis', 'page': 'sociedad'}, className="analysis-text")
-                        ], className="column-right"),
-                    ], className="two-column-layout"),
-                ])
+                        html.Div(id={'type': 'social-indicator-analysis', 'page': 'sociedad'}, className="analysis-text")
+                    ], className="column-right", style={'width': '50%'}),
+                ], className="two-column-layout", style={'display': 'flex', 'justifyContent': 'space-between'}),
             ]),
 
             crear_seccion_contenido("Análisis Regional de Indicadores Sociales", [
                 html.P("Seleccione una o varias regiones en la leyenda para ver los indicadores en detalle", className="instructions-text"),
                 html.Div([
                     html.Div([
-                        dcc.Graph(id={'type': 'radar-chart', 'page': 'sociedad'}, figure=create_radar_chart(df_normalized))
-                    ], className="column-left"),
+                        dcc.Graph(
+                            id={'type': 'radar-chart', 'page': 'sociedad'},
+                            figure=create_radar_chart(df_normalized),
+                            style={'height': '400px', 'width': '100%'}
+                        )
+                    ], className="column-left", style={'width': '50%'}),
                     html.Div([
                         html.H4("Interpretación del Gráfico de Radar", className="subsection-title"),
                         dcc.Markdown("""
@@ -175,15 +181,19 @@ def create_layout(app):
                         normalizado, permitiendo una comparación directa entre regiones. Las áreas más grandes 
                         indican un mejor desempeño general en los indicadores sociales.
                         """, className="analysis-text")
-                    ], className="column-right"),
-                ], className="two-column-layout"),
+                    ], className="column-right", style={'width': '50%'}),
+                ], className="two-column-layout", style={'display': 'flex', 'justifyContent': 'space-between'}),
             ]),
 
             crear_seccion_contenido("Correlaciones entre Indicadores Sociales", [
                 html.Div([
                     html.Div([
-                        dcc.Graph(id={'type': 'correlation-heatmap', 'page': 'sociedad'}, figure=create_correlation_heatmap(df_enriquecido))
-                    ], className="column-left"),
+                        dcc.Graph(
+                            id={'type': 'correlation-heatmap', 'page': 'sociedad'},
+                            figure=create_correlation_heatmap(df_enriquecido),
+                            style={'height': '400px', 'width': '100%'}
+                        )
+                    ], className="column-left", style={'width': '50%'}),
                     html.Div([
                         html.H4("Análisis de Correlaciones", className="subsection-title"),
                         dcc.Markdown("""
@@ -196,8 +206,8 @@ def create_layout(app):
                         - El Déficit Habitacional muestra una correlación significativa con el Índice de Vulnerabilidad,
                           destacando cómo la falta de vivienda adecuada amplifica otras formas de precariedad social.
                         """, className="analysis-text")
-                    ], className="column-right"),
-                ], className="two-column-layout"),
+                    ], className="column-right", style={'width': '50%'}),
+                ], className="two-column-layout", style={'display': 'flex', 'justifyContent': 'space-between'}),
             ]),
         ], className="page-content"),
     ], className="main-container")

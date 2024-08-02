@@ -89,24 +89,29 @@ def create_layout(app):
             crear_seccion_contenido("Indicadores Económicos Clave", [
                 html.Div([
                     html.Div([
-                        dcc.Dropdown(
-                            id={'type': 'indicator-dropdown', 'page': 'macroeconomia'},
-                            options=[
-                                {'label': 'Crecimiento del PIB (%)', 'value': 'Crecimiento del PIB (%)'},
-                                {'label': 'Desigualdad (Gini)', 'value': 'Desigualdad (Gini)'},
-                                {'label': 'Inflación (%)', 'value': 'Inflación (%)'},
-                                {'label': 'Desempleo (%)', 'value': 'Desempleo (%)'},
-                                {'label': 'Índice de Productividad', 'value': 'Índice de Productividad'}
-                            ],
-                            value='Crecimiento del PIB (%)',
-                            clearable=False
+                        html.Div([
+                            dcc.Dropdown(
+                                id={'type': 'indicator-dropdown', 'page': 'macroeconomia'},
+                                options=[
+                                    {'label': 'Crecimiento del PIB (%)', 'value': 'Crecimiento del PIB (%)'},
+                                    {'label': 'Desigualdad (Gini)', 'value': 'Desigualdad (Gini)'},
+                                    {'label': 'Inflación (%)', 'value': 'Inflación (%)'},
+                                    {'label': 'Desempleo (%)', 'value': 'Desempleo (%)'},
+                                    {'label': 'Índice de Productividad', 'value': 'Índice de Productividad'}
+                                ],
+                                value='Crecimiento del PIB (%)',
+                                clearable=False
+                            ),
+                        ], style={'width': '100%', 'marginBottom': '20px'}),
+                        dcc.Graph(
+                            id={'type': 'indicator-graph', 'page': 'macroeconomia'},
+                            style={'height': '400px', 'width': '100%'}
                         ),
-                        dcc.Graph(id={'type': 'indicator-graph', 'page': 'macroeconomia'}),
-                    ], className="column-left"),
+                    ], className="column-left", style={'width': '50%'}),
                     html.Div([
                         html.Div(id={'type': 'indicator-analysis', 'page': 'macroeconomia'}, className="analysis-text")
-                    ], className="column-right"),
-                ], className="two-column-layout"),
+                    ], className="column-right", style={'width': '50%'}),
+                ], className="two-column-layout", style={'display': 'flex', 'justifyContent': 'space-between'}),
             ]),
 
             html.Div([

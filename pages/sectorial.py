@@ -90,24 +90,29 @@ def create_layout(app):
             crear_seccion_contenido("Contribución Sectorial al PIB", [
                 html.Div([
                     html.Div([
-                        dcc.Dropdown(
-                            id={'type': 'sector-dropdown', 'page': 'sectorial'},
-                            options=[
-                                {'label': 'Minería', 'value': 'Minería (% PIB)'},
-                                {'label': 'Agricultura', 'value': 'Agricultura (% PIB)'},
-                                {'label': 'Manufactura', 'value': 'Manufactura (% PIB)'},
-                                {'label': 'Servicios', 'value': 'Servicios (% PIB)'},
-                                {'label': 'Construcción', 'value': 'Construcción (% PIB)'}
-                            ],
-                            value='Minería (% PIB)',
-                            clearable=False
+                        html.Div([
+                            dcc.Dropdown(
+                                id={'type': 'sector-dropdown', 'page': 'sectorial'},
+                                options=[
+                                    {'label': 'Minería', 'value': 'Minería (% PIB)'},
+                                    {'label': 'Agricultura', 'value': 'Agricultura (% PIB)'},
+                                    {'label': 'Manufactura', 'value': 'Manufactura (% PIB)'},
+                                    {'label': 'Servicios', 'value': 'Servicios (% PIB)'},
+                                    {'label': 'Construcción', 'value': 'Construcción (% PIB)'}
+                                ],
+                                value='Minería (% PIB)',
+                                clearable=False
+                            ),
+                        ], style={'width': '100%', 'marginBottom': '20px'}),
+                        dcc.Graph(
+                            id={'type': 'sector-graph', 'page': 'sectorial'},
+                            style={'height': '400px', 'width': '100%'}
                         ),
-                        dcc.Graph(id={'type': 'sector-graph', 'page': 'sectorial'}),
-                    ], className="column-left"),
+                    ], className="column-left", style={'width': '50%'}),
                     html.Div([
                         html.Div(id={'type': 'sector-analysis', 'page': 'sectorial'}, className="analysis-text")
-                    ], className="column-right"),
-                ], className="two-column-layout"),
+                    ], className="column-right", style={'width': '50%'}),
+                ], className="two-column-layout", style={'display': 'flex', 'justifyContent': 'space-between'}),
             ]),
 
             html.Div([

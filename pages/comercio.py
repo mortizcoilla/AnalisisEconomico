@@ -47,6 +47,34 @@ df_imports = pd.DataFrame({
     'Maquinaria': machinery_imports
 })
 
+# Configuración del layout para los gráficos
+layout_config = dict(
+    autosize=True,
+    height=400,
+    margin=dict(l=50, r=50, b=100, t=100, pad=4),
+    paper_bgcolor="white",
+    plot_bgcolor="white",
+)
+
+# Crear figuras para exportaciones e importaciones
+fig_exports = px.area(df_exports, x='Año', y=['Cobre', 'Frutas'],
+                      title='Composición de las Exportaciones Chilenas',
+                      labels={'value': 'Miles de millones USD', 'variable': 'Producto'},
+                      color_discrete_map={
+                          'Cobre': colors['primary'],
+                          'Frutas': colors['secondary']
+                      })
+fig_exports.update_layout(**layout_config)
+
+fig_imports = px.area(df_imports, x='Año', y=['Combustibles', 'Maquinaria'],
+                      title='Composición de las Importaciones Chilenas',
+                      labels={'value': 'Miles de millones USD', 'variable': 'Producto'},
+                      color_discrete_map={
+                          'Combustibles': colors['primary'],
+                          'Maquinaria': colors['secondary']
+                      })
+fig_imports.update_layout(**layout_config)
+
 # 4. Diccionario con los análisis para cada aspecto del comercio
 analisis_comercio = {
     'Balanza Comercial': """
@@ -94,23 +122,28 @@ def create_layout(app):
             
             crear_seccion_contenido("Indicadores Clave del Comercio Internacional", [
                 html.Div([
+                    dcc.Dropdown(
+                        id={'type': 'comercio-dropdown', 'page': 'comercio'},
+                        options=[
+                            {'label': 'Balanza Comercial', 'value': 'Balanza Comercial'},
+                            {'label': 'Exportaciones', 'value': 'Exportaciones'},
+                            {'label': 'Importaciones', 'value': 'Importaciones'}
+                        ],
+                        value='Balanza Comercial',
+                        clearable=False
+                    ),
+                ], className="dropdown-container"),
+                html.Div([
                     html.Div([
-                        dcc.Dropdown(
-                            id={'type': 'comercio-dropdown', 'page': 'comercio'},
-                            options=[
-                                {'label': 'Balanza Comercial', 'value': 'Balanza Comercial'},
-                                {'label': 'Exportaciones', 'value': 'Exportaciones'},
-                                {'label': 'Importaciones', 'value': 'Importaciones'}
-                            ],
-                            value='Balanza Comercial',
-                            clearable=False
+                        dcc.Graph(
+                            id={'type': 'comercio-graph', 'page': 'comercio'},
+                            style={'height': '400px', 'width': '100%'}
                         ),
-                        dcc.Graph(id={'type': 'comercio-graph', 'page': 'comercio'}),
-                    ], className="column-left"),
+                    ], className="column-left", style={'width': '48%'}),
                     html.Div([
                         html.Div(id={'type': 'comercio-analysis', 'page': 'comercio'}, className="analysis-text")
-                    ], className="column-right"),
-                ], className="two-column-layout"),
+                    ], className="column-right", style={'width': '48%'}),
+                ], className="two-column-layout", style={'display': 'flex', 'justifyContent': 'space-between'}),
             ]),
 
             html.Div([
@@ -119,26 +152,18 @@ def create_layout(app):
                     html.Div([
                         dcc.Graph(
                             id={'type': 'exports-composition-graph', 'page': 'comercio'},
-                            figure=px.area(df_exports, x='Año', y=['Cobre', 'Frutas'],
-                                           title='Composición de las Exportaciones Chilenas (Miles de millones USD)',
-                                           color_discrete_map={
-                                               'Cobre': colors['primary'],
-                                               'Frutas': colors['secondary']
-                                           })
+                            figure=fig_exports,
+                            style={'height': '400px', 'width': '100%'}
                         )
-                    ], className="column-left"),
+                    ], className="column-left", style={'width': '48%'}),
                     html.Div([
                         dcc.Graph(
                             id={'type': 'imports-composition-graph', 'page': 'comercio'},
-                            figure=px.area(df_imports, x='Año', y=['Combustibles', 'Maquinaria'],
-                                           title='Composición de las Importaciones Chilenas (Miles de millones USD)',
-                                           color_discrete_map={
-                                               'Combustibles': colors['primary'],
-                                               'Maquinaria': colors['secondary']
-                                           })
+                            figure=fig_imports,
+                            style={'height': '400px', 'width': '100%'}
                         )
-                    ], className="column-right")
-                ], className="two-column-layout"),
+                    ], className="column-right", style={'width': '48%'})
+                ], className="two-column-layout", style={'display': 'flex', 'justifyContent': 'space-between'}),
             ]),
 
             html.Div([
@@ -166,7 +191,6 @@ def create_layout(app):
             ], className="conclusion-section")
         ], className="page-content"),
     ], className="main-container")
-
 
 # 6. Funciones auxiliares
 def create_comercio_figure(indicator):

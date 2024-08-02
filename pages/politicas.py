@@ -92,23 +92,28 @@ def create_layout(app):
             crear_seccion_contenido("Indicadores Clave de Políticas Públicas", [
                 html.Div([
                     html.Div([
-                        dcc.Dropdown(
-                            id={'type': 'indicator-dropdown', 'page': 'politicas'},
-                            options=[
-                                {'label': 'Gasto Público (% PIB)', 'value': 'Gasto Público (% PIB)'},
-                                {'label': 'Inversión Pública (% PIB)', 'value': 'Inversión Pública (% PIB)'},
-                                {'label': 'Deuda Pública (% PIB)', 'value': 'Deuda Pública (% PIB)'},
-                                {'label': 'Presión Fiscal (% PIB)', 'value': 'Presión Fiscal (% PIB)'}
-                            ],
-                            value='Gasto Público (% PIB)',
-                            clearable=False
+                        html.Div([
+                            dcc.Dropdown(
+                                id={'type': 'indicator-dropdown', 'page': 'politicas'},
+                                options=[
+                                    {'label': 'Gasto Público (% PIB)', 'value': 'Gasto Público (% PIB)'},
+                                    {'label': 'Inversión Pública (% PIB)', 'value': 'Inversión Pública (% PIB)'},
+                                    {'label': 'Deuda Pública (% PIB)', 'value': 'Deuda Pública (% PIB)'},
+                                    {'label': 'Presión Fiscal (% PIB)', 'value': 'Presión Fiscal (% PIB)'}
+                                ],
+                                value='Gasto Público (% PIB)',
+                                clearable=False
+                            ),
+                        ], style={'width': '100%', 'marginBottom': '20px'}),
+                        dcc.Graph(
+                            id={'type': 'indicator-graph', 'page': 'politicas'},
+                            style={'height': '400px', 'width': '100%'}
                         ),
-                        dcc.Graph(id={'type': 'indicator-graph', 'page': 'politicas'}),
-                    ], className="column-left"),
+                    ], className="column-left", style={'width': '50%'}),
                     html.Div([
                         html.Div(id={'type': 'indicator-analysis', 'page': 'politicas'}, className="analysis-text")
-                    ], className="column-right"),
-                ], className="two-column-layout"),
+                    ], className="column-right", style={'width': '50%'}),
+                ], className="two-column-layout", style={'display': 'flex', 'justifyContent': 'space-between'}),
             ]),
 
             html.Div([
