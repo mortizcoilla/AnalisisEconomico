@@ -1,10 +1,12 @@
+# 1. Importaciones
 from dash import dcc, html, callback
 from dash.dependencies import Input, Output, State
 from dash.exceptions import PreventUpdate
 import plotly.graph_objs as go
 import pandas as pd
-from utils import Encabezado, Footer, crear_resumen_ejecutivo, crear_seccion_contenido
+from utils import crear_resumen_ejecutivo, crear_seccion_contenido
 
+# 2. Definición de variables globales
 # Colores definidos
 colors = {
     'primary': '#1C3D5A',
@@ -14,7 +16,7 @@ colors = {
     'text': '#333333'
 }
 
-# Datos para los gráficos
+# 3. Datos para los gráficos
 years = list(range(2010, 2024))
 mining_contribution = [13.5, 14.2, 13.8, 12.5, 11.7, 10.9, 9.8, 10.2, 10.5, 10.8, 11.2, 12.5, 13.1, 12.8]
 agriculture_contribution = [3.2, 3.1, 3.0, 2.9, 2.8, 2.7, 2.6, 2.5, 2.4, 2.3, 2.4, 2.5, 2.6, 2.7]
@@ -31,7 +33,7 @@ df = pd.DataFrame({
     'Construcción (% PIB)': construction_contribution
 })
 
-# Diccionario con los análisis para cada sector
+# 4. Diccionario con los análisis para cada sector
 analisis_sectores = {
     'Minería (% PIB)': """
     La minería sigue siendo un pilar fundamental de la economía chilena, pero su contribución al PIB fluctúa:
@@ -75,11 +77,10 @@ analisis_sectores = {
     """
 }
 
+# 5. Definición del layout
 def create_layout(app):
     return html.Div([
-        Encabezado(app),
         html.Div([
-            html.H2("Análisis Sectorial de Chile: Desafíos y Oportunidades", className="section-title"),
             crear_resumen_ejecutivo("""
             El análisis sectorial de la economía chilena revela una estructura productiva diversa pero con desafíos significativos. 
             Mientras algunos sectores muestran un crecimiento robusto, otros enfrentan obstáculos para su desarrollo y competitividad.
@@ -136,9 +137,9 @@ def create_layout(app):
                 """, className="conclusion-text", style={'color': colors['text']})
             ], className="conclusion-section")
         ], className="page-content"),
-        Footer(app)
     ], className="main-container")
 
+# 6. Funciones auxiliares
 def create_sector_figure(sector):
     try:
         trace = go.Scatter(
@@ -169,6 +170,7 @@ def create_sector_figure(sector):
     except Exception as e:
         return go.Figure()  # Figura vacía en caso de error
 
+# 7. Callbacks
 @callback(
     [Output({'type': 'sector-graph', 'page': 'sectorial'}, 'figure'),
      Output({'type': 'sector-analysis', 'page': 'sectorial'}, 'children')],
@@ -184,6 +186,7 @@ def update_sector_content(selected_sector):
         return fig, analysis
     except Exception as e:
         return go.Figure(), f"Error: {str(e)}"
-    
+
+# 8. Inicialización de callbacks (si es necesario)
 def init_callbacks(app):
     pass

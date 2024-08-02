@@ -1,3 +1,4 @@
+/* 1. Estilos del encabezado principal */
 .header {
   background-color: var(--color-primary);
   position: fixed;
@@ -8,57 +9,76 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+/* 2. Contenido del encabezado */
 .header-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   padding: 1rem 2rem;
 }
 
+/* 3. Contenedor del título */
 .header-title-container {
   text-align: center;
-  padding: 1rem 0;
+  margin-bottom: 1rem;
 }
 
 .main-title {
   color: var(--color-background);
-  font-size: 2rem;
-  margin-bottom: 0.5rem;
+  font-size: 1.5rem;
+  margin-bottom: 0.25rem;
 }
 
 .subtitle {
   color: var(--color-accent);
-  font-size: 1rem;
+  font-size: 0.9rem;
   font-weight: 300;
 }
 
+/* 4. Menú de navegación */
 .nav-menu {
-  background-color: var(--color-background);
-  padding: 0.5rem 0;
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
 }
 
 .nav-link {
-  color: var(--color-primary);
+  color: var(--color-background);
   padding: 0.5rem 1rem;
-  margin: 0 0.5rem;
   transition: all 0.3s ease;
-  border-bottom: 2px solid transparent;
 }
 
-.nav-link:hover, .nav-link.active {
-  color: var(--color-secondary);
-  border-bottom: 2px solid var(--color-secondary);
+.nav-link:hover {
+  background-color: var(--color-secondary);
 }
 
+/* 5. Botón de menú para dispositivos móviles */
+.menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: var(--color-background);
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+/* 6. Estilos responsivos */
 @media (max-width: 960px) {
+  /* 6.1 Ajustes del contenido del encabezado */
+  .header-content {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* 6.2 Ajustes del menú de navegación */
   .nav-menu {
     display: none;
     flex-direction: column;
+    width: 100%;
     position: absolute;
     top: 100%;
     left: 0;
-    right: 0;
-    background-color: var(--color-background);
+    background-color: var(--color-primary);
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
   }
 
@@ -66,24 +86,8 @@
     display: flex;
   }
 
-  .nav-link {
-    padding: 1rem;
-    border-bottom: 1px solid var(--color-border);
-  }
-
+  /* 6.3 Ajustes del botón de menú */
   .menu-toggle {
     display: block;
-    background: none;
-    border: none;
-    font-size: 1.5rem;
-    color: var(--color-background);
-    cursor: pointer;
-    padding: 0.5rem;
-  }
-}
-
-@media (min-width: 961px) {
-  .menu-toggle {
-    display: none;
   }
 }

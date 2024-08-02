@@ -1,14 +1,11 @@
 /* Importación de archivos CSS */
-@import url('variables.css');
-@import url('typography.css');
-@import url('layout.css');
-@import url('header.css');
-@import url('navigation.css');
-@import url('sections.css');
-@import url('graphs.css');
-@import url('tables.css');
-@import url('footer.css');
-@import url('responsive.css');
+@import url('base/variables.css');
+@import url('base/typography.css');
+@import url('layout/layout.css');  /* Nuevo archivo de layout */
+@import url('layout/sections.css');
+@import url('utils/graphs.css');
+@import url('utils/tables.css');
+@import url('layout/responsive.css');
 
 /* Estilos generales */
 * {
@@ -24,4 +21,24 @@ body {
   line-height: 1.6;
   margin: 0;
   padding: 5;
+}
+
+.back-to-top {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: var(--color-primary);
+  color: var(--color-background);
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  font-size: 20px;
+  cursor: pointer;
+  display: none;
+  z-index: 1000;
+}
+
+.back-to-top.visible {
+  display: block;
 }

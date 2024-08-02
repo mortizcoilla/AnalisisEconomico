@@ -1,37 +1,30 @@
+# 1. Importaciones
 from dash import html, dcc
 import pandas as pd
 
-def Encabezado(app):
-    return html.Header([
+# 2. Componentes principales de la interfaz
+
+def crear_barra_lateral(app):
+    return html.Div([
         html.Div([
-            html.Div([
-                html.H1("Análisis Económico de Chile", className="main-title"),
-                html.H2(id="subtitle", className="subtitle"),
-            ], className="header-title-container"),
-            html.Button("☰", className="menu-toggle", id="menu-toggle"),
-        ], className="header-content"),
+            html.A(html.Img(src=app.get_asset_url("icons/github.png"), className="social-icon"), href="https://github.com/mortizcoilla", target="_blank"),
+            html.A(html.Img(src=app.get_asset_url("icons/linkedin.png"), className="social-icon"), href="https://www.linkedin.com/in/mortizcoilla", target="_blank"),
+            html.A(html.Img(src=app.get_asset_url("icons/microsoft.png"), className="social-icon"), href="https://learn.microsoft.com/es-mx/users/mortizcoilla", target="_blank"),
+            html.A(html.Img(src=app.get_asset_url("icons/coursera.png"), className="social-icon"), href="https://www.coursera.org/learner/mortizcoilla", target="_blank"),
+        ], className="social-links"),
         html.Nav([
             dcc.Link("Resumen", href="/informe-economico-chile/resumen", className="nav-link"),
             dcc.Link("Macroeconomía", href="/informe-economico-chile/macroeconomia", className="nav-link"),
-            dcc.Link("Sectorial", href="/informe-economico-chile/sectorial", className="nav-link"),
-            dcc.Link("Comercio", href="/informe-economico-chile/comercio", className="nav-link"),
-            dcc.Link("Sociedad", href="/informe-economico-chile/sociedad", className="nav-link"),
+            dcc.Link("Estructura Económica", href="/informe-economico-chile/sectorial", className="nav-link"),
+            dcc.Link("Comercio Internacional", href="/informe-economico-chile/comercio", className="nav-link"),
+            dcc.Link("Métricas Sociales", href="/informe-economico-chile/sociedad", className="nav-link"),
             dcc.Link("Políticas Públicas", href="/informe-economico-chile/politicas", className="nav-link"),
-        ], className="nav-menu", id="nav-menu")
-    ], className="header")
+        ], className="sidebar-nav"),
+    ], className="sidebar")
 
-def obtener_menu():
-    return html.Nav([
-        dcc.Link("Resumen", href="/informe-economico-chile/resumen", className="nav-link"),
-        dcc.Link("Macroeconomía", href="/informe-economico-chile/macroeconomia", className="nav-link"),
-        dcc.Link("Sectorial", href="/informe-economico-chile/sectorial", className="nav-link"),
-        dcc.Link("Comercio", href="/informe-economico-chile/comercio", className="nav-link"),
-        dcc.Link("Sociedad", href="/informe-economico-chile/sociedad", className="nav-link"),
-        dcc.Link("Políticas Públicas", href="/informe-economico-chile/politicas", className="nav-link"),
-    ], className="nav-menu")
+# 3. Funciones auxiliares para la creación de contenido
 
 def crear_tabla_dash(df):
-    """ Retorna una definición de tabla HTML de Dash para un DataFrame de Pandas """
     return html.Table([
         html.Thead(
             html.Tr([html.Th(col) for col in df.columns])
@@ -42,18 +35,6 @@ def crear_tabla_dash(df):
             ]) for i in range(len(df))
         ])
     ], className="data-table")
-
-def Footer(app):
-    return html.Footer([
-        html.Div([
-            html.A(html.Img(src=app.get_asset_url("icons/whatsapp.png"), className="social-icon"), href="https://wa.me/56933293943?text=Hola%20Miguel", target="_blank"),
-            html.A(html.Img(src=app.get_asset_url("icons/email.png"), className="social-icon"), href="mailto:mortizcoilla@gmail.com?subject=Contacto%20desde%20la%20página%20web&body=Hola%20Miguel,", target="_blank"),
-            html.A(html.Img(src=app.get_asset_url("icons/github.png"), className="social-icon"), href="https://github.com/mortizcoilla", target="_blank"),
-            html.A(html.Img(src=app.get_asset_url("icons/linkedin.png"), className="social-icon"), href="https://www.linkedin.com/in/mortizcoilla", target="_blank"),
-            html.A(html.Img(src=app.get_asset_url("icons/microsoft.png"), className="social-icon"), href="https://learn.microsoft.com/es-mx/users/mortizcoilla", target="_blank"),
-            html.A(html.Img(src=app.get_asset_url("icons/coursera.png"), className="social-icon"), href="https://www.coursera.org/learner/mortizcoilla", target="_blank"),
-        ], className="social-links"),
-    ], className="footer")
 
 def crear_seccion_contenido(titulo, contenido, clase_adicional=""):
     return html.Div([

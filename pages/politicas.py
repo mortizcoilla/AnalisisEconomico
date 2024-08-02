@@ -1,10 +1,12 @@
+# 1. Importaciones
 from dash import dcc, html, callback
 from dash.dependencies import Input, Output, State
 from dash.exceptions import PreventUpdate
 import plotly.graph_objs as go
 import pandas as pd
-from utils import Encabezado, Footer, crear_resumen_ejecutivo, crear_seccion_contenido
+from utils import crear_resumen_ejecutivo, crear_seccion_contenido
 
+# 2. Definición de variables globales
 # Colores definidos
 colors = {
     'primary': '#1C3D5A',
@@ -14,7 +16,7 @@ colors = {
     'text': '#333333'
 }
 
-# Datos para los gráficos (estos son datos de ejemplo, deberías reemplazarlos con datos reales)
+# 3. Datos para los gráficos
 years = list(range(2010, 2024))
 gasto_publico = [22.5, 22.8, 23.1, 23.5, 23.9, 24.2, 24.6, 25.0, 25.4, 25.8, 32.1, 28.5, 27.2, 26.5]
 inversion_publica = [3.2, 3.3, 3.4, 3.5, 3.6, 3.7, 3.8, 3.9, 4.0, 4.1, 4.2, 4.3, 4.4, 4.5]
@@ -29,7 +31,7 @@ df = pd.DataFrame({
     'Presión Fiscal (% PIB)': presion_fiscal
 })
 
-# Diccionario con los análisis para cada indicador
+# 4. Diccionario con los análisis para cada indicador
 analisis_indicadores = {
     'Gasto Público (% PIB)': """
     El gasto público de Chile ha experimentado un crecimiento significativo, pasando del 22.5% del PIB en 2010 al 26.5% en 2023:
@@ -73,11 +75,10 @@ analisis_indicadores = {
     """
 }
 
+# 5. Definición del layout
 def create_layout(app):
     return html.Div([
-        Encabezado(app),
         html.Div([
-            html.H2("Políticas Públicas en Chile: Desafíos y Perspectivas", className="section-title"),
             crear_resumen_ejecutivo("""
             El análisis de las políticas públicas en Chile revela un panorama complejo, con avances significativos
             pero también desafíos persistentes. El gasto público ha aumentado, reflejando una mayor intervención
@@ -137,9 +138,9 @@ def create_layout(app):
                 """, className="conclusion-text", style={'color': colors['text']})
             ], className="conclusion-section")
         ], className="page-content"),
-        Footer(app)
     ], className="main-container")
 
+# 6. Funciones auxiliares
 def create_indicator_figure(indicator):
     try:
         trace = go.Scatter(
@@ -170,6 +171,7 @@ def create_indicator_figure(indicator):
     except Exception as e:
         return go.Figure()  # Figura vacía en caso de error
 
+# 7. Callbacks
 @callback(
     [Output({'type': 'indicator-graph', 'page': 'politicas'}, 'figure'),
      Output({'type': 'indicator-analysis', 'page': 'politicas'}, 'children')],
@@ -185,6 +187,7 @@ def update_politicas_content(selected_indicator):
         return fig, analysis
     except Exception as e:
         return go.Figure(), f"Error: {str(e)}"
-    
+
+# 8. Inicialización de callbacks (si es necesario)
 def init_callbacks(app):
     pass

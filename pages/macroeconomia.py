@@ -1,10 +1,12 @@
+# 1. Importaciones
 from dash import dcc, html, callback
 from dash.dependencies import Input, Output, State
 from dash.exceptions import PreventUpdate
 import plotly.graph_objs as go
 import pandas as pd
-from utils import Encabezado, Footer, crear_resumen_ejecutivo, crear_seccion_contenido
+from utils import crear_resumen_ejecutivo, crear_seccion_contenido
 
+# 2. Definición de variables globales
 # Colores definidos
 colors = {
     'primary': '#1C3D5A',
@@ -14,7 +16,7 @@ colors = {
     'text': '#333333'
 }
 
-# Datos para los gráficos
+# 3. Datos para los gráficos
 years = list(range(2010, 2024))
 gdp_growth = [5.8, 6.1, 5.3, 4.0, 1.8, 2.3, 1.7, 1.2, 3.9, 1.1, -5.8, 11.7, 2.4, 0.2]
 inequality = [0.51, 0.505, 0.505, 0.495, 0.495, 0.485, 0.48, 0.475, 0.47, 0.465, 0.46, 0.455, 0.45, 0.445]
@@ -31,7 +33,7 @@ df = pd.DataFrame({
     'Desempleo (%)': unemployment
 })
 
-# Diccionario con los análisis para cada indicador
+# 4. Diccionario con los análisis para cada indicador
 analisis_indicadores = {
     'Crecimiento del PIB (%)': """
     El crecimiento del PIB chileno, celebrado por muchos como un indicador de éxito económico, merece un escrutinio más profundo:
@@ -74,9 +76,7 @@ analisis_indicadores = {
 
 def create_layout(app):
     return html.Div([
-        Encabezado(app),
         html.Div([
-            html.H2("Macroeconomía de Chile: Más allá de las cifras", className="section-title"),
             crear_resumen_ejecutivo("""
             La economía chilena, a menudo vista como un modelo exitoso, presenta una realidad compleja y contradictoria. 
             Aunque el PIB ha crecido un 0.2% post-pandemia, persisten profundas desigualdades y una peligrosa dependencia
@@ -126,9 +126,9 @@ def create_layout(app):
                 """, className="conclusion-text", style={'color': colors['text']})
             ], className="conclusion-section")
         ], className="page-content"),
-        Footer(app)
     ], className="main-container")
 
+# 6. Funciones auxiliares
 def create_indicator_figure(indicator):
     try:
         trace = go.Scatter(
@@ -159,6 +159,7 @@ def create_indicator_figure(indicator):
     except Exception as e:
         return go.Figure()  # Figura vacía en caso de error
 
+# 7. Callbacks
 @callback(
     [Output({'type': 'indicator-graph', 'page': 'macroeconomia'}, 'figure'),
      Output({'type': 'indicator-analysis', 'page': 'macroeconomia'}, 'children')],
@@ -174,6 +175,7 @@ def update_macroeconomia_content(selected_indicator):
         return fig, analysis
     except Exception as e:
         return go.Figure(), f"Error: {str(e)}"
-    
+
+# 8. Inicialización de callbacks (si es necesario)
 def init_callbacks(app):
     pass

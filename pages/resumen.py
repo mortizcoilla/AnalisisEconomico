@@ -1,12 +1,12 @@
+# 1. Importaciones
 from dash import html, dcc, callback
-from dash.dependencies import Input, Output, State
+from dash.dependencies import Input, Output
 from dash.exceptions import PreventUpdate
 import plotly.graph_objs as go
-import plotly.express as px
 import pandas as pd
-from utils import Encabezado, crear_resumen_ejecutivo, crear_seccion_contenido
+from utils import crear_resumen_ejecutivo, crear_seccion_contenido
 
-# Datos para los gráficos (asegúrate de que esta parte esté correcta y completa)
+# 2. Definición de variables globales
 df_summary = pd.DataFrame({
     'Año': range(2010, 2024),
     'Índice de Libertad Económica': [78, 77, 76, 75, 73, 72, 70, 68, 66, 64, 62, 60, 58, 56],
@@ -17,118 +17,119 @@ df_summary = pd.DataFrame({
     'Calidad de la Educación (Índice)': [75, 74, 73, 72, 71, 70, 69, 68, 67, 66, 65, 64, 63, 62]
 })
 
-# Colores personalizados
 colors = {
     'primary': '#1C3D5A',
     'secondary': '#3E7CB1',
     'text_primary': '#4A4A4A',
-    'text_secondary': '#818181',
     'background': '#FFFFFF',
-    'background_alt': '#F5F8FA',
-    'accent': '#A3D5FF',
-    'border': '#E0E0E0'
 }
 
-def crear_grafico(id, tipo, datos):
-    try:
-        if tipo == 'libertad-pib':
-            figure = go.Figure(data=[
-                go.Scatter(x=datos['Año'], y=datos['Índice de Libertad Económica'], name='Libertad Económica', yaxis='y', line=dict(color=colors['primary']), mode='lines+markers', marker=dict(size=8, color=colors['primary'])),
-                go.Scatter(x=datos['Año'], y=datos['Crecimiento del PIB (%)'], name='Crecimiento PIB', yaxis='y2', line=dict(color=colors['secondary']), mode='lines+markers', marker=dict(size=8, color=colors['secondary']))
-            ])
-            figure.update_layout(
-                title='Libertad Económica vs. Crecimiento del PIB',
-                yaxis=dict(title='Índice de Libertad Económica', titlefont=dict(color=colors['primary'])),
-                yaxis2=dict(title='Crecimiento del PIB (%)', overlaying='y', side='right', titlefont=dict(color=colors['secondary']))
-            )
-        elif tipo == 'calidad-vida':
-            figure = go.Figure(data=[
-                go.Scatter(x=datos['Año'], y=datos['Poder Adquisitivo (Índice)'], name='Poder Adquisitivo', line=dict(color=colors['primary']), mode='lines+markers', marker=dict(size=8, color=colors['primary'])),
-                go.Scatter(x=datos['Año'], y=datos['Satisfacción con el Sistema de Salud (%)'], name='Satisfacción con el Sistema de Salud', line=dict(color=colors['secondary']), mode='lines+markers', marker=dict(size=8, color=colors['secondary'])),
-                go.Scatter(x=datos['Año'], y=datos['Calidad de la Educación (Índice)'], name='Calidad de la Educación', line=dict(color=colors['accent']), mode='lines+markers', marker=dict(size=8, color=colors['accent']))
-            ])
-            figure.update_layout(
-                title='Evolución de Indicadores de Calidad de Vida'
-            )
-        elif tipo == 'criminalidad':
-            figure = go.Figure(data=[
-                go.Scatter(x=datos['Año'], y=datos['Tasa de Criminalidad (por 100,000 hab.)'], name='Tasa de Criminalidad', line=dict(color=colors['primary']), mode='lines+markers', marker=dict(size=8, color=colors['primary']))
-            ])
-            figure.update_layout(
-                title='Evolución de la Tasa de Criminalidad en Chile'
-            )
-        else:
-            raise ValueError(f"Tipo de gráfico no reconocido: {tipo}")
-        
-        # Configuración común para todos los gráficos
-        figure.update_layout(
-            font_family="Roboto",
-            legend=dict(orientation="h", yanchor="bottom", y=-0.3, xanchor="center", x=0.5),
-            plot_bgcolor='white',
-            paper_bgcolor='white',
-            xaxis=dict(gridcolor='lightgrey'),
-            yaxis=dict(gridcolor='lightgrey')
-        )
-        
-        return dcc.Graph(id={'type': 'graph', 'index': id}, figure=figure)
-    except Exception as e:
-        return html.Div(f"Error al crear el gráfico: {str(e)}")
+# 3. Funciones auxiliares
+def create_summary_figure(selected_indicator):
+    trace = go.Scatter(
+        x=df_summary['Año'],
+        y=df_summary[selected_indicator],
+        mode='lines+markers',
+        name=selected_indicator,
+        line=dict(color=colors['primary'], width=2),
+        marker=dict(size=8, color=colors['secondary'])
+    )
+    
+    layout = go.Layout(
+        title=f'Evolución de {selected_indicator} en Chile',
+        xaxis=dict(title='Año'),
+        yaxis=dict(title=selected_indicator),
+        plot_bgcolor='white',
+        paper_bgcolor='white',
+        font=dict(family="Roboto", size=12, color=colors['text_primary'])
+    )
+    
+    return {'data': [trace], 'layout': layout}
 
+interpretaciones = {
+    'Índice de Libertad Económica': """
+    La caída constante del Índice de Libertad Económica refleja un preocupante aumento de la intervención estatal y regulaciones excesivas. 
+    Esta tendencia sofoca la iniciativa privada, reduce la competitividad y frena el crecimiento económico. 
+    Es crucial revertir esta tendencia mediante desregulación, reducción de impuestos y protección de derechos de propiedad para estimular la inversión y el emprendimiento.
+    """,
+    'Crecimiento del PIB (%)': """
+    La volatilidad y el bajo crecimiento del PIB evidencian la fragilidad del modelo económico chileno. 
+    La dependencia excesiva de materias primas y la falta de diversificación económica limitan el potencial de crecimiento. 
+    Se necesitan reformas que fomenten la innovación, reduzcan la burocracia y abran nuevos sectores a la competencia para impulsar un crecimiento sostenido y resiliente.
+    """,
+    'Poder Adquisitivo (Índice)': """
+    La reciente caída del poder adquisitivo es alarmante y refleja políticas económicas fallidas. 
+    El aumento de la inflación y la rigidez del mercado laboral erosionan el bienestar de los ciudadanos. 
+    Es imperativo implementar políticas que fomenten la flexibilidad laboral, reduzcan la carga impositiva y controlen el gasto público para recuperar el poder adquisitivo.
+    """,
+    'Tasa de Criminalidad (por 100,000 hab.)': """
+    El aumento constante de la criminalidad evidencia el fracaso de las políticas de seguridad estatales. 
+    La falta de respeto por la propiedad privada y la ineficacia del sistema judicial socavan la libertad y el desarrollo económico. 
+    Se requieren reformas que fortalezcan el estado de derecho, mejoren la eficiencia policial y promuevan la responsabilidad individual para revertir esta tendencia.
+    """,
+    'Satisfacción con el Sistema de Salud (%)': """
+    La caída en la satisfacción con el sistema de salud refleja las deficiencias del modelo centralizado y burocrático. 
+    La falta de competencia y opciones limita la calidad y accesibilidad de los servicios. 
+    Es necesario introducir mayor competencia en el sector, fomentar la medicina privada y ofrecer opciones de seguro más flexibles para mejorar la calidad y eficiencia.
+    """,
+    'Calidad de la Educación (Índice)': """
+    El declive en la calidad educativa es consecuencia de un sistema rígido y centralizado. 
+    La falta de opciones y competencia en educación limita la innovación y adaptabilidad. 
+    Se requiere una reforma que fomente la diversidad educativa, introduzca vouchers escolares y reduzca la intervención estatal para mejorar la calidad y relevancia de la educación.
+    """
+}
+
+# 4. Definición del layout
 def create_layout(app):
     return html.Div([
-        Encabezado(app),
         html.Div([
-            html.Div([
-                crear_resumen_ejecutivo("""
-                El presente informe analiza en profundidad la macroeconomía, los sectores productivos, el comercio internacional, 
-                los indicadores sociales y las políticas públicas de Chile. El análisis revela una situación crítica en la economía 
-                y sociedad chilena, sugiriendo la necesidad urgente de reformas estructurales tales como:
-                """, [
-                    html.Ul([
-                        html.Li("Implementar políticas que fomenten la libertad económica y estimulen el crecimiento del PIB."),
-                        html.Li("Mejorar la calidad y accesibilidad de los sistemas de salud y educación."),
-                        html.Li("Reforzar las políticas de seguridad pública para reducir la tasa de criminalidad."),
-                        html.Li("Desarrollar estrategias para aumentar el poder adquisitivo de los ciudadanos."),
-                    ])
+            crear_resumen_ejecutivo("""
+            El presente informe analiza en profundidad la macroeconomía, los sectores productivos, el comercio internacional, 
+            los indicadores sociales y las políticas públicas de Chile. El análisis revela una situación crítica en la economía 
+            y sociedad chilena, sugiriendo la necesidad urgente de reformas estructurales tales como:
+            """, [
+                html.Ul([
+                    html.Li("Implementar políticas que fomenten la libertad económica y estimulen el crecimiento del PIB."),
+                    html.Li("Mejorar la calidad y accesibilidad de los sistemas de salud y educación."),
+                    html.Li("Reforzar las políticas de seguridad pública para reducir la tasa de criminalidad."),
+                    html.Li("Desarrollar estrategias para aumentar el poder adquisitivo de los ciudadanos."),
                 ])
-            ], className="executive-summary-container content-section"),
-            
-            crear_seccion_contenido("Libertad Económica y Crecimiento del PIB", [
-                html.P("""
-                La relación entre la libertad económica y el crecimiento del PIB en Chile muestra una tendencia preocupante. 
-                La disminución de la libertad económica parece estar teniendo un impacto negativo en el crecimiento económico del país.
-                """, className="analysis-text"),
-                crear_grafico('grafico-libertad-pib', 'libertad-pib', df_summary)
             ]),
             
-            crear_seccion_contenido("Indicadores de Calidad de Vida", [
-                html.P("""
-                Los indicadores de calidad de vida en Chile muestran una tendencia preocupante. Se observa un deterioro 
-                generalizado en la calidad de vida de los chilenos, a pesar del supuesto progreso económico.
-                """, className="analysis-text"),
-                crear_grafico('grafico-calidad-vida', 'calidad-vida', df_summary)
-            ]),
-            
-            crear_seccion_contenido("Criminalidad y Seguridad", [
-                html.P("""
-                La tasa de criminalidad en Chile ha aumentado de manera alarmante. Este aumento significativo en la 
-                criminalidad sugiere un deterioro en la seguridad pública y plantea serias preguntas sobre la efectividad 
-                de las políticas de seguridad actuales.
-                """, className="analysis-text"),
-                crear_grafico('grafico-criminalidad', 'criminalidad', df_summary)
+            crear_seccion_contenido("Indicadores Clave", [
+                html.Div([
+                    html.Div([
+                        dcc.Dropdown(
+                            id='indicator-dropdown',
+                            options=[{'label': i, 'value': i} for i in df_summary.columns if i != 'Año'],
+                            value='Índice de Libertad Económica',
+                            clearable=False
+                        ),
+                    ], className="dropdown-container"),
+                    html.Div([
+                        html.Div([
+                            dcc.Graph(id='summary-graph')
+                        ], className="column-left"),
+                        html.Div([
+                            html.Div(id='interpretation', className="analysis-text")
+                        ], className="column-right"),
+                    ], className="two-column-layout"),
+                ])
             ]),
         ], className="page-content"),
-        html.Footer([
-            html.Div([
-                html.A(html.Img(src=app.get_asset_url("icons/whatsapp.png"), className="social-icon"), href="https://wa.me/56933293943?text=Hola%20Miguel", target="_blank"),
-                html.A(html.Img(src=app.get_asset_url("icons/email.png"), className="social-icon"), href="mailto:mortizcoilla@gmail.com?subject=Contacto%20desde%20la%20página%20web&body=Hola%20Miguel,", target="_blank"),
-                html.A(html.Img(src=app.get_asset_url("icons/github.png"), className="social-icon"), href="https://github.com/mortizcoilla", target="_blank"),
-                html.A(html.Img(src=app.get_asset_url("icons/linkedin.png"), className="social-icon"), href="https://www.linkedin.com/in/mortizcoilla", target="_blank"),
-                html.A(html.Img(src=app.get_asset_url("icons/microsoft.png"), className="social-icon"), href="https://learn.microsoft.com/es-mx/users/mortizcoilla", target="_blank"),
-                html.A(html.Img(src=app.get_asset_url("icons/coursera.png"), className="social-icon"), href="https://www.coursera.org/learner/mortizcoilla", target="_blank"),
-            ], className="social-links"),
-        ], className="footer")
     ], className="main-container")
 
+# 5. Callbacks
+@callback(
+    [Output('summary-graph', 'figure'),
+     Output('interpretation', 'children')],
+    [Input('indicator-dropdown', 'value')]
+)
+def update_graph(selected_indicator):
+    if not selected_indicator:
+        raise PreventUpdate
+    return create_summary_figure(selected_indicator), interpretaciones[selected_indicator]
+
+# 6. Inicialización de callbacks
 def init_callbacks(app):
     pass

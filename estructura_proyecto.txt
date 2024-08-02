@@ -1,3 +1,6 @@
+|-- .gitignore.txt
+|-- Procfile
+|-- README.md
 |-- app.py
 |-- assets
     |-- icons
@@ -22,9 +25,11 @@
             |-- responsive.css
             |-- sections.css
         |-- main-styles.css
+        |-- scripts
         |-- utils
             |-- graphs.css
             |-- tables.css
+|-- estructura_proyecto.txt
 |-- pages
     |-- comercio.py
     |-- macroeconomia.py
@@ -35,6 +40,7 @@
 |-- requirements.txt
 |-- tools
     |-- estructura.py
+    |-- permisos.py
 |-- utils
     |-- __init__.py
     |-- utils.py

@@ -1,11 +1,13 @@
+# 1. Importaciones
 from dash import dcc, html, callback
 from dash.dependencies import Input, Output, State
 from dash.exceptions import PreventUpdate
 import plotly.graph_objs as go
 import plotly.express as px
 import pandas as pd
-from utils import Encabezado, Footer, crear_resumen_ejecutivo, crear_seccion_contenido
+from utils import crear_resumen_ejecutivo, crear_seccion_contenido
 
+# 2. Definición de variables globales
 # Colores definidos
 colors = {
     'primary': '#1C3D5A',
@@ -15,7 +17,7 @@ colors = {
     'text': '#333333'
 }
 
-# Datos para los gráficos
+# 3. Datos para los gráficos
 years = list(range(2010, 2024))
 exports = [71.1, 81.4, 78.1, 76.8, 75.1, 62.0, 60.7, 69.2, 75.2, 69.9, 74.1, 94.7, 98.1, 86.4]
 imports = [59.2, 74.7, 80.1, 79.2, 72.3, 62.4, 59.4, 65.1, 74.2, 69.6, 59.0, 84.1, 92.2, 83.1]
@@ -37,7 +39,7 @@ df_exports = pd.DataFrame({
     'Frutas': fruit_exports
 })
 
-# Diccionario con los análisis para cada aspecto del comercio
+# 4. Diccionario con los análisis para cada aspecto del comercio
 analisis_comercio = {
     'Balanza Comercial': """
     La balanza comercial positiva de Chile, que alcanzó $3.3 mil millones en 2023, esconde realidades preocupantes:
@@ -71,11 +73,10 @@ analisis_comercio = {
     """
 }
 
+# 5. Definición del layout
 def create_layout(app):
     return html.Div([
-        Encabezado(app),
         html.Div([
-            html.H2("Comercio Internacional de Chile: Dependencia y Vulnerabilidad", className="section-title"),
             crear_resumen_ejecutivo("""
             El análisis del comercio internacional de Chile revela una economía atrapada en un modelo extractivista y dependiente, 
             con una diversificación limitada y una vulnerabilidad crónica a los shocks externos. A pesar de la amplia red de 
@@ -141,9 +142,9 @@ def create_layout(app):
                 """, className="conclusion-text", style={'color': colors['text']})
             ], className="conclusion-section")
         ], className="page-content"),
-        Footer(app)
     ], className="main-container")
 
+# 6. Funciones auxiliares
 def create_comercio_figure(indicator):
     try:
         trace = go.Scatter(
@@ -168,6 +169,7 @@ def create_comercio_figure(indicator):
     except Exception as e:
         return go.Figure()  # Figura vacía en caso de error
 
+# 7. Callbacks
 @callback(
     [Output({'type': 'comercio-graph', 'page': 'comercio'}, 'figure'),
      Output({'type': 'comercio-analysis', 'page': 'comercio'}, 'children')],
@@ -183,6 +185,7 @@ def update_comercio_content(selected_indicator):
         return fig, analysis
     except Exception as e:
         return go.Figure(), f"Error: {str(e)}"
-    
+
+# 8. Inicialización de callbacks (si es necesario)
 def init_callbacks(app):
     pass
