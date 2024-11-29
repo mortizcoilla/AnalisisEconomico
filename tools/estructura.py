@@ -31,7 +31,7 @@ def imprimir_estructura_proyecto(ruta_proyecto, ignorar=None):
     return estructura
 
 if __name__ == "__main__":
-    ruta_proyecto = r"C:\Workspace\Economic_Analysis"
+    ruta_proyecto = "/home/makabrus/Workspace/AnalisisEconomico"
     # Puedes añadir más carpetas para ignorar en esta lista
     ignorar = ['env', '.git', '__pycache__']
     estructura = imprimir_estructura_proyecto(ruta_proyecto, ignorar)
